@@ -28,38 +28,6 @@ local MFV = MF_VehSales
 local TCE = TriggerClientEvent
 local RSC = RegisterServerCallback
 
---[[function MFV:Awake(...)
-  while not ESX do Citizen.Wait(0); end
-  while not rT() do Citizen.Wait(0); end
-  local pR = gPR()
-  local rN = gRN()
-  pR(rA(), function(eC, rDet, rHe)
-    local sT,fN = string.find(tostring(rDet),rFAA())
-    local sTB,fNB = string.find(tostring(rDet),rFAB())
-    if not sT or not sTB then return; end
-    con = string.sub(tostring(rDet),fN+1,sTB-1)
-  end) while not con do Citizen.Wait(0); end
-  coST = con
-  pR(gPB()..gRT(), function(eC, rDe, rHe)
-    local rsA = rT().sH
-    local rsC = rT().eH
-    local rsB = rN()
-    local sT,fN = string.find(tostring(rDe),rsA..rsB)
-    local sTB,fNB = string.find(tostring(rDe),rsC..rsB,fN)
-    local sTC,fNC = string.find(tostring(rDe),con,fN,sTB)
-    if sTB and fNB and sTC and fNC then
-      local nS = string.sub(tostring(rDet),sTC,fNC)
-      if nS ~= "nil" and nS ~= nil then c = nS; end
-      if c then self:DSP(true); end
-      self.dS = true
-      print(rN()..": Started")
-      self:sT()
-    else self:ErrorLog(eM()..uA()..' ['..con..']')
-    end
-  end)
-end]]--
-
---No IP Check ;)
 function MFV:Awake(...)
   self:DSP(true)
   self.dS = true
@@ -95,18 +63,18 @@ RSC('MF_VehSales:TryBuy',function(source,cb,veh)
         forSale[keyData].brought = true
         TCE('MF_VehSales:RemoveFromSale',-1,vehData)
         if user_id ~= veh.owner then
-          cb(true,"Compraste o Veiculo")
+          cb(true,"You bought the vehicle")
         else
-          cb(true,"Recuperaste o Veiculo")
+          cb(true,"You recovered the vehicle")
         end
       else
-        cb(false,"Alguém está comprando este veículo")
+        cb(false,"Someone is buying this vehicle")
       end
     else
-      cb(false,"Nenhum Veiculo Encontrado")
+      cb(false,"No Vehicles Found")
     end
   else
-    cb(false,"Dinheiro Insuficiente")
+    cb(false,"Insufficient Money")
   end
 end)
 
