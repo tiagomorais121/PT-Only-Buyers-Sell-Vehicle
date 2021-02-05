@@ -281,14 +281,14 @@ Citizen.CreateThread(function(...)
         if not lastPlate or closest.vehProps.plate ~= lastPlate then
           isConfirming = false
           if user_owner ~= user_id then
-            drawText = "[~r~"..GetDisplayNameFromVehicleModel(closest.vehProps.model).."~s~] Pressione [~r~E~s~] para comprar [$~r~"..closest.price.."~s~]"
+            drawText = "[~r~"..GetDisplayNameFromVehicleModel(closest.vehProps.model).."~s~] Press [~r~E~s~] to buy [$~r~"..closest.price.."~s~]"
           else
-            drawText = "[~r~"..GetDisplayNameFromVehicleModel(closest.vehProps.model).."~s~] Pressione [~r~E~s~] para recuperar seu veículo [$~r~"..closest.price.."~s~]"
+            drawText = "[~r~"..GetDisplayNameFromVehicleModel(closest.vehProps.model).."~s~] Press [~r~E~s~] to recover the vehicle [$~r~"..closest.price.."~s~]"
           end
-          local turbs = 'Nao'
-          if closest.vehProps.turbo == "on" then turbs = 'Sim'; end
-          drawTextB = "[Turbo : ~r~"..turbs.."~s~] [Motor : ~r~"..tostring(closest.vehProps.modEngine).."~s~] [Caixa de Velocidade : ~r~"..tostring(closest.vehProps.modTransmission).."~s~]"
-          drawTextC = "[Suspensão : ~r~"..tostring(closest.vehProps.modSuspension).."~s~] [Blindagem : ~r~"..tostring(closest.vehProps.modArmor).."~s~] [Travoes : ~r~"..tostring(closest.vehProps.modBrakes).."~s~]"
+          local turbs = 'No'
+          if closest.vehProps.turbo == "on" then turbs = 'Yes'; end
+          drawTextB = "[Turbo : ~r~"..turbs.."~s~] [Motor : ~r~"..tostring(closest.vehProps.modEngine).."~s~] [Gear Box : ~r~"..tostring(closest.vehProps.modTransmission).."~s~]"
+          drawTextC = "[Suspension : ~r~"..tostring(closest.vehProps.modSuspension).."~s~] [Armor : ~r~"..tostring(closest.vehProps.modArmor).."~s~] [Brakes : ~r~"..tostring(closest.vehProps.modBrakes).."~s~]"
           lastPlate = closest.vehProps.plate
         end
         DrawText3D(closest.loc.x,closest.loc.y,closest.loc.z + 1.0, drawText)
@@ -298,7 +298,7 @@ Citizen.CreateThread(function(...)
           lastTimer = GetGameTimer()
           if not isConfirming then
             if user_owner ~= user_id then
-              drawText = "[~r~"..GetDisplayNameFromVehicleModel(closest.vehProps.model).."~s~] Pressione [~r~E~s~] novamente para confirmar esta compra [~r~"..closest.price.."€~s~]"
+              drawText = "[~r~"..GetDisplayNameFromVehicleModel(closest.vehProps.model).."~s~] Press [~r~E~s~] again to confirm the purchase [~r~$"..closest.price.."~s~]"
             else
               lastPlate = false
               BuyVehicle(closest)
@@ -340,11 +340,11 @@ function BuyVehicle(closest)
 end
 
 function SellCar(price)
-  if not price or not price[1] then exports['mythic_notify']:DoHudText('error', "Necessita por uma quantia"); return; end
+  if not price or not price[1] then exports['mythic_notify']:DoHudText('error', "Need for an amount"); return; end
   if type(price) == "table" then price = tonumber(price[1]); end
-  if not price or type(price) ~= "number" or price <= 0 then exports['mythic_notify']:DoHudText('error', "Pare de brincar"); return; end
-  if not IsPedInAnyVehicle(GetPlayerPed(-1),false) then exports['mythic_notify']:DoHudText('error', 'Precisas estar no veiculo'); return; end
-  if not sellAnywhere and GetVecDist(GetEntityCoords(GetPlayerPed(-1)),salesYard) > salesRadius then exports['mythic_notify']:DoHudText('error', 'Você deve estar no pátio de vendas para fazer isso'); return; end
+  if not price or type(price) ~= "number" or price <= 0 then exports['mythic_notify']:DoHudText('error', "Stop Kiding"); return; end
+  if not IsPedInAnyVehicle(GetPlayerPed(-1),false) then exports['mythic_notify']:DoHudText('error', 'You need be in a vehicle'); return; end
+  if not sellAnywhere and GetVecDist(GetEntityCoords(GetPlayerPed(-1)),salesYard) > salesRadius then exports['mythic_notify']:DoHudText('error', 'You must be in the sales yard to do this'); return; end
   local veh = GetVehiclePedIsIn(GetPlayerPed(-1),false)
   local vehProps = PT.Game.GetVehicleProperties(veh)
   TSC('MF_VehSales:TrySell', function(canSell,msg)
